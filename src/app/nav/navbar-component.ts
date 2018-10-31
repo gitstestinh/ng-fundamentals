@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { AuthService } from '../user/auth-service';
 
 @Component({
   selector: 'nav-bar',
@@ -15,6 +16,10 @@ import { Component } from '@angular/core';
   ]
 })
 export class NavBarComponent {
-  title = 'app';
-  message = 'kablamo';
+
+  auth: AuthService
+
+  constructor(private authService: AuthService){   
+    this.auth = authService
+  }
 }
