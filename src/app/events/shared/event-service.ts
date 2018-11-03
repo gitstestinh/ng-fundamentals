@@ -47,7 +47,7 @@ export class EventService{
 
       setTimeout(() => {
         emitter.emit(results);
-      }, 1000)
+      }, 100)
 
       return emitter;
     }
