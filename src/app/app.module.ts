@@ -26,6 +26,7 @@ import { RouterModule } from '@angular/router';
 import { Error404Component } from './errors/404-component';
 import { AuthService } from './user/auth-service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { LocationValidator } from './events/location-validator-directive';
 
 //register third party service interfaces
 declare let toastr:Toastr
@@ -52,7 +53,8 @@ declare let jQuery:Object
     SimpleModalComponent,
     ModalTriggerDirective,
     UpvoteComponent,
-    DurationPipe
+    DurationPipe,
+    LocationValidator
   ],
   bootstrap: [EventsAppComponent],
   providers : [
