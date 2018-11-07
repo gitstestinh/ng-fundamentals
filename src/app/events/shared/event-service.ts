@@ -1,7 +1,7 @@
 import {Injectable, EventEmitter} from '@angular/core'
-import {Subject, Observable, of} from 'rxjs'
+import { Observable, of} from 'rxjs'
 import { IEvent, ISession } from './event-model';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 
 @Injectable()
@@ -14,15 +14,9 @@ export class EventService{
         .pipe(catchError(this.handleError<IEvent[]>('getEvents', [])));
     }
 
-    private handleError<T>(operation = 'operation', result?: T){
-      return (error: any): Observable<T> => {
-        console.error(error);
-        return of(result as T);
-      }
-    }
-
-    getEvent(id:number): IEvent{
-      return EVENTS.find(event => event.id === id);
+    getEvent(id:number): Observable<IEvent>{
+      return this.http.get<IEvent>('/api/events/' + id)
+      .pipe(catchError(this.handleError<IEvent>('getEvent')));
     }
 
     updateEvent(event:IEvent){
@@ -30,35 +24,48 @@ export class EventService{
       EVENTS[index] = event;
     }
 
-    saveEvent(event: IEvent){
-      event.id = 999;
-      event.sessions = []
-      EVENTS.push(event);
+    saveEvent(event: IEvent) {
+      let options = {
+        headers: new HttpHeaders({'Content-Type': 'application/json'})
+      };
+
+      return this.http.post<IEvent>('/api/events', event, options)
+      .pipe(catchError(this.handleError<IEvent>('saveEvent')));
+      ;
     }
 
-    searchSessions(searchTerm: string){
+    searchSessions(searchTerm: string): Observable<ISession[]>{
       var term = searchTerm.toLocaleLowerCase();
-      var results: ISession[] = [];
+      return this.http.get<ISession[]>('/api/sessions/search?search=' + term)
+      .pipe(catchError(this.handleError<ISession[]>('searchSessions')));
 
-      EVENTS.forEach(event => {
-        var matchingSessions = event.sessions.filter(session => session.name.toLocaleLowerCase().indexOf(searchTerm) > -1);
-        matchingSessions = matchingSessions.map((session:any) => {
-          session.eventId = event.id;
-          return session;;
-        })
+      //this was the test with hardcoded data
+      // EVENTS.forEach(event => {
+      //   var matchingSessions = event.sessions.filter(session => session.name.toLocaleLowerCase().indexOf(searchTerm) > -1);
+      //   matchingSessions = matchingSessions.map((session:any) => {
+      //     session.eventId = event.id;
+      //     return session;;
+      //   })
 
-        results = results.concat(matchingSessions);
-      })
-
-
-      var emitter = new EventEmitter(true);
+      //   results = results.concat(matchingSessions);
+      // })
 
 
-      setTimeout(() => {
-        emitter.emit(results);
-      }, 100)
+      // var emitter = new EventEmitter(true);
 
-      return emitter;
+
+      // setTimeout(() => {
+      //   emitter.emit(results);
+      // }, 100)
+
+      // return emitter;
+    }
+
+    private handleError<T>(operation = 'operation', result?: T){
+      return (error: any): Observable<T> => {
+        console.error(error);
+        return of(result as T);
+      }
     }
 }
 
