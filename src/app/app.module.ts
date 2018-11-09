@@ -23,11 +23,12 @@ import { CollapsibleWellComponent, TOASTR_TOKEN, Toastr, JQ_TOKEN, SimpleModalCo
 
 import { NavBarComponent } from './nav/navbar-component';
 import { appRoutes} from './routes'
-import { RouterModule } from '@angular/router';
 import { Error404Component } from './errors/404-component';
 import { AuthService } from './user/auth-service';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { LocationValidator } from './events/location-validator-directive';
+
+import { RouterModule } from '@angular/router';
 
 //register third party service interfaces
 declare let toastr:Toastr
