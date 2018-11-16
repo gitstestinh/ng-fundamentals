@@ -17,7 +17,7 @@ import {
   DurationPipe,
   UpvoteComponent,
   VoterService
-} from './events/index'
+} from './events/index';
 
 import { CollapsibleWellComponent, TOASTR_TOKEN, Toastr, JQ_TOKEN, SimpleModalComponent, ModalTriggerDirective } from './common/index';
 
@@ -31,8 +31,8 @@ import { LocationValidator } from './events/location-validator-directive';
 import { RouterModule } from '@angular/router';
 
 //register third party service interfaces
-declare let toastr:Toastr
-declare let jQuery:Object
+declare let toastr: Toastr;
+declare let jQuery: Object;
 
 @NgModule({
   imports: [
@@ -61,10 +61,10 @@ declare let jQuery:Object
   ],
   bootstrap: [EventsAppComponent],
   providers : [
-    EventService, 
+    EventService,
     {
-      provide: TOASTR_TOKEN, useValue: toastr //this is how you wrap third party libs for dependency injection
-    }, 
+      provide: TOASTR_TOKEN, useValue: toastr // this is how you wrap third party libs for dependency injection
+    },
     {
       provide: JQ_TOKEN, useValue: jQuery
     },
@@ -72,17 +72,16 @@ declare let jQuery:Object
     AuthService,
     VoterService,
     EventsListResolver,
-    { 
-      provide: 'canDeactivateCreateEvent', 
-      useValue: 
-      checkDirtyState
+    {
+      provide: 'canDeactivateCreateEvent',
+      useValue: checkDirtyState
   }
   ]
 })
 export class AppModule { }
 
 export function checkDirtyState(component: CreateEventComponent){
-  if(component.isDirty){
+  if(component.isDirty) {
     return window.confirm('you have not saved this event, do you really want to cancel?')
   }
 
